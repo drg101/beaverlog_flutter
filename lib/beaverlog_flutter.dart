@@ -107,7 +107,7 @@ class BeaverLog with WidgetsBindingObserver {
 
     try {
       final response = await http.post(
-        Uri.parse(_host!),
+        Uri.parse("$_host/api/events"),
         headers: {
           'Content-Type': 'application/json',
           'app_id': _appId!,
