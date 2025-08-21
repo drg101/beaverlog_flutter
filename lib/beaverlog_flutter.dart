@@ -28,13 +28,13 @@ class BeaverLog with WidgetsBindingObserver {
     _publicKey = publicKey;
     _host = host;
     _isConfigured = true;
-
     // Auto-initialize after configuration
     await _initialize();
   }
 
   Future<void> _initialize() async {
     if (!_isInitialized) {
+      WidgetsFlutterBinding.ensureInitialized();
       WidgetsBinding.instance.addObserver(this);
       await _loadOrCreateUid();
       _createNewSession();
@@ -113,10 +113,10 @@ class BeaverLog with WidgetsBindingObserver {
           'app_id': _appId!,
           'public_key': _publicKey!,
         },
-        body: jsonEncode(eventData),
+        body: jsonEncode([eventData]),
       );
 
-      if (response.statusCode != 201) {
+      if (response.statusCode != 200) {
         debugPrint(
           'BeaverLog: Failed to send event. Status: ${response.statusCode}',
         );
@@ -146,7 +146,7 @@ class BeaverLog with WidgetsBindingObserver {
       'uid': _uid,
       'session_id': _sessionId,
       'timestamp': _lastActivity,
-      if (meta != null) 'meta': meta,
+      'meta': meta ?? {},
     };
 
     // Send to server
