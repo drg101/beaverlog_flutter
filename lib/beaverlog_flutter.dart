@@ -153,6 +153,6 @@ class BeaverLog with WidgetsBindingObserver {
     await _sendEvent(eventData);
 
     // Local debug print
-    debugPrint('Event: $eventData');
+    debugPrint('Sent Event: $eventData');
   }
 }
