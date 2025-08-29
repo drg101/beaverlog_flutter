@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -141,12 +142,17 @@ class BeaverLog with WidgetsBindingObserver {
     _checkSessionTimeout();
     _lastActivity = DateTime.now().millisecondsSinceEpoch;
 
+    final platformMeta = {
+      'platform': kIsWeb ? 'web' : defaultTargetPlatform.name.toLowerCase(),
+      ...?meta,
+    };
+
     final eventData = {
       'name': eventName,
       'uid': _uid,
       'session_id': _sessionId,
       'timestamp': _lastActivity,
-      'meta': meta ?? {},
+      'meta': platformMeta,
     };
 
     // Send to server
